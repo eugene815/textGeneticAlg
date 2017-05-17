@@ -1,9 +1,17 @@
 window.onload = function() {
     var successSpecimen = document.getElementById('successSpecimen');
     var successSpecimenId = document.getElementById('successSpecimenId');
+    var generations = document.getElementById('generations');
 
-    var population = new Population("test", 1000);
+    var evolutionTarget = "test";
+    var populationSize = 1000;
+    var mutationRate = 0.01;
+
+    var population = new Population(evolutionTarget, populationSize, mutationRate);
     population.init();
+    
+    console.log("Mutation Rate:");
+    console.log(population.mutationRate);
 
     while(population.check() == -1) {
 
@@ -17,34 +25,32 @@ window.onload = function() {
 
         population.nextGeneration();
 
+        // отрисовка результата
         var generationResult = population.check();
         if (generationResult != -1) {
-            successSpecimenId.innerHTML = generationResult;
             successSpecimen.innerHTML = population.elements[generationResult].dna;
         }
         else {
-            successSpecimenId.innerHTML = generationResult;
             successSpecimen.innerHTML = "EMPTY";
         }
+        params.innerHTML = "Цель: " + evolutionTarget + " Размер популяции: " + populationSize + " Вероятность мутации: " + mutationRate;
+        generations.innerHTML = population.generations;
+        successSpecimenId.innerHTML = generationResult;
 
         // аварийная остановка, если эволюция зашла в тупик
-        if (population.generations > 1000)
+        if (population.generations > 100)
             break;
     }
 }
 
-function getChar(){
-    //var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    var possible = "abcdefghijklmnopqrstuvwxyz";
-    return possible.charAt(Math.floor(Math.random() * possible.length));
-}
-
 class Population{
-    constructor(target, size){
+    constructor(target, size, mutationRate){
         this.generations = 0;
         // цель эволюции
         this.target = target;
         this.size = size;
+        // вероятность мутации
+        this.mutationRate = mutationRate;
         // представители (Specimen) популяции
         this.elements = [];
         // для создания новых элементов популяции
@@ -108,7 +114,20 @@ class Population{
     }
 
     mutate(){
-
+        // существует вероятность мутации случайного символа в ДНК 
+        // у каждого представителя популяции
+        for(var i = 0; i < this.size; i++) {
+            var dna = "";
+            for(var j = 0; j < this.target.length; j++) {
+                if (Math.random() < this.mutationRate){
+                    console.log("Mutation!");
+                    dna = dna.concat(getChar());
+                }
+                else
+                    dna = dna.concat(this.elements[i].dna[j]);
+            }
+            this.elements[i].dna = dna;
+        }
     }
 
     // создает следующую популяцию из генетического пула
@@ -134,4 +153,10 @@ class Specimen{
         this.dna = dna;
         this.score = score;
     }
+}
+
+function getChar(){
+    //var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    var possible = "abcdefghijklmnopqrstuvwxyz";
+    return possible.charAt(Math.floor(Math.random() * possible.length));
 }
