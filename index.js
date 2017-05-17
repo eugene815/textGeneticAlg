@@ -2,10 +2,10 @@ function initAlgorithm() {
     var successSpecimen = document.getElementById('successSpecimen');
     var successSpecimenId = document.getElementById('successSpecimenId');
     var generations = document.getElementById('generations');
-
+    var timeSlot = document.getElementById('spent-time');
     var evolutionTarget, populationSize, mutationRate;
 
-    console.log('%c Поиск параметров', "color:darkgreen;");
+    console.log('%cПоиск параметров', "color:darkgreen;");
 
     evolutionTarget = document.getElementById('evolution-target').value;
     populationSize = parseInt(document.getElementById('population-size').value);
@@ -33,35 +33,49 @@ function initAlgorithm() {
 
     console.log("Mutation Rate:");
     console.log(population.mutationRate);
+    var startDate = new Date();
+    new Promise(function(resolve, reject){
+        var generationResult = null;
+        var results = {};
+        while(population.check() == -1) {
 
-    while(population.check() == -1) {
+            population.calculateScore();
+            population.createGenePool();
 
-        population.calculateScore();
-        population.createGenePool();
+        /*
+            console.log("Population");
+            console.log(population.elements);
+            console.log("GenePool");
+            console.log(population.genePool);
+        */
 
-        // console.log("Population");
-        // console.log(population.elements);
-        // console.log("GenePool");
-        // console.log(population.genePool);
+            population.nextGeneration();
 
-        population.nextGeneration();
+            // отрисовка результата
+            generationResult = population.check();
 
-        // отрисовка результата
-        var generationResult = population.check();
-        if (generationResult != -1) {
-            successSpecimen.innerHTML = population.elements[generationResult].dna;
+            // аварийная остановка, если эволюция зашла в тупик
+            if (population.generations >= 1000) {
+                reject('Экстренный выход. Превышено кол-во допустимых эволюций.');
+            } else {
+                console.log('Генерация #'+population.generations);
+            }
         }
-        else {
-            successSpecimen.innerHTML = "#";
-        }
-        // params.innerHTML = "Цель: " + evolutionTarget + " Размер популяции: " + populationSize + " Вероятность мутации: " + mutationRate;
-        generations.innerHTML = population.generations;
-        successSpecimenId.innerHTML = generationResult;
+        results.successSpecimen = population.elements[generationResult].dna;
+        results.generations = population.generations;
+        results.successSpecimenId = generationResult;
+        resolve(results);
 
-        // аварийная остановка, если эволюция зашла в тупик
-        if (population.generations > 1000)
-            break;
-    }
+    }).then(function(results){
+        var endDate = new Date();
+        timeSlot.innerHTML = (endDate - startDate)/1000 + ' секунд';
+        console.log('%cДанные получены', 'color:darkgreen;');
+        successSpecimen.innerHTML = results.successSpecimen;
+        successSpecimenId.innerHTML = results.successSpecimenId;
+        generations.innerHTML = results.generations;
+    }).catch(function(error){
+        alert(error);
+    });
 };
 class Population{
     constructor(target, size, mutationRate){
