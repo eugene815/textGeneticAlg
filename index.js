@@ -3,13 +3,13 @@ window.onload = function() {
     var successSpecimenId = document.getElementById('successSpecimenId');
     var generations = document.getElementById('generations');
 
-    var evolutionTarget = "test";
-    var populationSize = 1000;
-    var mutationRate = 0.01;
+    var evolutionTarget = "sky above the port";
+    var populationSize = 10000;
+    var mutationRate = 0.02;
 
     var population = new Population(evolutionTarget, populationSize, mutationRate);
     population.init();
-    
+
     console.log("Mutation Rate:");
     console.log(population.mutationRate);
 
@@ -38,7 +38,7 @@ window.onload = function() {
         successSpecimenId.innerHTML = generationResult;
 
         // аварийная остановка, если эволюция зашла в тупик
-        if (population.generations > 100)
+        if (population.generations > 1000)
             break;
     }
 }
@@ -88,7 +88,7 @@ class Population{
     createGenePool(){
         var genePool = [];
         for(var i = 0; i < this.size; i++){
-            // количество генов элемента в генетическом полу зависит от его score
+            // количество генов элемента в генетическом пуле зависит от его score
             var num = Math.floor(this.elements[i].score / 10) + 1;
             
             for(var j = 0; j < num; j++)
@@ -156,7 +156,7 @@ class Specimen{
 }
 
 function getChar(){
-    //var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    var possible = "abcdefghijklmnopqrstuvwxyz";
+    //var possible = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    var possible = " abcdefghijklmnopqrstuvwxyz";
     return possible.charAt(Math.floor(Math.random() * possible.length));
 }
