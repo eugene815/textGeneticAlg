@@ -1,14 +1,36 @@
 window.onload = function() {
-    var data = document.getElementById('data');
-    data.innerHTML = getChar();
+    var successSpecimen = document.getElementById('successSpecimen');
+    var successSpecimenId = document.getElementById('successSpecimenId');
 
-    var population = new Population("test", 20000);
+    var population = new Population("test", 1000);
     population.init();
-    population.calculateScore();
 
-    console.log(population.elements);
+    while(population.check() == -1) {
 
-    data.innerHTML = population.check();
+        population.calculateScore();
+        population.createGenePool();
+
+        console.log("Population");
+        console.log(population.elements);
+        console.log("GenePool");
+        console.log(population.genePool);
+
+        population.nextGeneration();
+
+        var generationResult = population.check();
+        if (generationResult != -1) {
+            successSpecimenId.innerHTML = generationResult;
+            successSpecimen.innerHTML = population.elements[generationResult].dna;
+        }
+        else {
+            successSpecimenId.innerHTML = generationResult;
+            successSpecimen.innerHTML = "EMPTY";
+        }
+
+        // аварийная остановка, если эволюция зашла в тупик
+        if (population.generations > 1000)
+            break;
+    }
 }
 
 function getChar(){
@@ -20,6 +42,7 @@ function getChar(){
 class Population{
     constructor(target, size){
         this.generations = 0;
+        // цель эволюции
         this.target = target;
         this.size = size;
         // представители (Specimen) популяции
@@ -60,17 +83,39 @@ class Population{
         var genePool = [];
         for(var i = 0; i < this.size; i++){
             // количество генов элемента в генетическом полу зависит от его score
-            var num = floor(this.population.elements[i].score / 10) + 1;
+            var num = Math.floor(this.elements[i].score / 10) + 1;
             
             for(var j = 0; j < num; j++)
-                genePool.push(this.population.elements[i].dna);
+                genePool.push(this.elements[i].dna);
         }
         this.genePool = genePool;
     }
 
+    // создает ген из 2 случайных генов из генетического пула
+    combineGenes(){
+        var genePoolSize = this.genePool.length;
+        var geneCenter = Math.floor(this.target.length / 2);
+        for(var i = 0; i < this.size; i++) {
+            // берем два случайных куска генов
+            var parentGeneOne = this.genePool[(Math.floor(Math.random() * genePoolSize))];
+            var parentGeneTwo = this.genePool[(Math.floor(Math.random() * genePoolSize))];
+            var genePieceOne = parentGeneOne.slice(0, geneCenter);
+            var genePieceTwo = parentGeneTwo.slice(geneCenter);
+            // и создаем из них новый
+            var newDna = genePieceOne + genePieceTwo;
+            this.elements[i] = new Specimen(newDna, 0);
+        }
+    }
+
+    mutate(){
+
+    }
+
     // создает следующую популяцию из генетического пула
     nextGeneration(){
-
+        this.combineGenes();
+        // и затем осуществляет случайные мутации
+        this.mutate();
         this.generations++;
     }
 
