@@ -23,9 +23,9 @@ function initAlgorithm() {
     }
 
     console.log('Итоговые настройки:')
-    console.log(evolutionTarget);
-    console.log(populationSize);
-    console.log(mutationRate);
+    console.log('Цель эволюции ' + evolutionTarget);
+    console.log('Размер популяции ' + populationSize);
+    console.log('Вероятность мутации ' + mutationRate);
 
     var population = new Population(evolutionTarget, populationSize, mutationRate);
     
@@ -56,9 +56,9 @@ function initAlgorithm() {
 
             // аварийная остановка, если эволюция зашла в тупик
             if (population.generations >= 1000) {
-                reject('Экстренный выход. Превышено кол-во допустимых эволюций.');
+                reject('Экстренный выход. Превышено кол-во итераций.');
             } else {
-                console.log('Генерация #'+population.generations);
+                console.log('Поколение #' + population.generations);
             }
         }
         results.successSpecimen = population.elements[generationResult].dna;
@@ -150,11 +150,12 @@ class Population{
     mutate(){
         // существует вероятность мутации случайного символа в ДНК 
         // у каждого представителя популяции
+        var mutationsCount = 0;
         for(var i = 0; i < this.size; i++) {
             var dna = "";
             for(var j = 0; j < this.target.length; j++) {
                 if (Math.random() < this.mutationRate){
-                    console.log("Mutation!");
+                    mutationsCount++;
                     dna = dna.concat(getChar());
                 }
                 else
@@ -162,6 +163,7 @@ class Population{
             }
             this.elements[i].dna = dna;
         }
+        console.log("Количество мутаций: " + mutationsCount);
     }
 
     // создает следующую популяцию из генетического пула
