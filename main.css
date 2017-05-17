@@ -1,0 +1,18 @@
+.margin-zero{
+    margin:0 !important;
+}
+.margin-zero-top{
+    margin-top: 0 !important;
+}
+.margin-zero-right{
+    margin-right: 0 !important;
+}
+.margin-zero-bottom{
+    margin-bottom: 0 !important;
+}
+.margin-zero-left{
+    margin-left: 0 !important;
+}
+.input-group:not(:first-child){
+    margin-top:12.5px;
+}

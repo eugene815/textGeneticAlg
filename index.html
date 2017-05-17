@@ -2,15 +2,96 @@
 <html>
     <head>
         <title>Genetic Algoritm</title>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./main.css">
+        <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="index.js"></script>
     </head>
     <body>
-        <h2>Параметры Алгоритма: </h2>
-        <span id="params">EMPTY</span><br>
-        <hr>
-        <span>Поколений: </span><span id="generations">EMPTY</span><br>
-        <span>Позиция: </span><span id="successSpecimenId">EMPTY</span><br>
-        <span>Представитель: </span><span id="successSpecimen">EMPTY</span>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="page-header">               
+                        <h1>Генетический Алгоритм <small>предложения</small></h1>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="container-fluid">
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        <h3 class="margin-zero-top margin-zero-bottom">
+                                            Параметры запуска алгоритма
+                                        </h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div id="form" class="col-xs-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Цель</span>
+                                                <input id="evolution-target" type="text" class="form-control" value="sky above the port" placeholder="введите целевое предложение на латиннице">
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Размер популяции</span>
+                                                <input id="population-size" type="text" class="form-control" placeholder="введите размер популяции">
+                                            </div>
+                                            <div class="input-group">
+                                                <span class="input-group-addon">Фактор мутации</span>
+                                                <input id="mutation-rate" type="text" class="form-control" placeholder="введите фактор мутации">
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <button class="btn btn-primary btn-large btn-block" style="margin-top:12.5px" onclick="initAlgorithm()">
+                                                        Старт
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="container-fluid">
+                                <div class="panel panel-success">
+                                    <div class="panel-heading">
+                                        <h3 class="margin-zero-top margin-zero-bottom">
+                                            Результаты
+                                        </h3>
+                                    </div>    
+                                    <div class="panel-body">
+                                        <div class="col-xs-12">
+                                            <table class="table condensed bordered stripped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Параметр</th>
+                                                        <th>Значение</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Поколений</td>
+                                                        <td id="generations">#</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Позиция</td>
+                                                        <td id="successSpecimenId">#</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Последнее значение</td>
+                                                        <td id="successSpecimen">#</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

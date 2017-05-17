@@ -1,0 +1,21 @@
+{
+  "name": "textGeneticAlg",
+  "main": "index.js",
+  "homepage": "https://github.com/eugene815/textGeneticAlg",
+  "authors": [
+    "eugen815",
+    "ShiiRochi"
+  ],
+  "description": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}

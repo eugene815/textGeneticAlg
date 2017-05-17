@@ -1,13 +1,34 @@
-window.onload = function() {
+function initAlgorithm() {
     var successSpecimen = document.getElementById('successSpecimen');
     var successSpecimenId = document.getElementById('successSpecimenId');
     var generations = document.getElementById('generations');
 
-    var evolutionTarget = "sky above the port";
-    var populationSize = 10000;
-    var mutationRate = 0.02;
+    var evolutionTarget, populationSize, mutationRate;
+
+    console.log('%c Поиск параметров', "color:darkgreen;");
+
+    evolutionTarget = document.getElementById('evolution-target').value;
+    populationSize = parseInt(document.getElementById('population-size').value);
+    mutationRate = parseFloat(document.getElementById('mutation-rate').value);
+
+    
+    if(!evolutionTarget){
+        evolutionTarget = "sky above the port";
+    }
+    if(!populationSize){
+        populationSize = 10000;
+    }
+    if(!mutationRate){
+        mutationRate = 0.02;
+    }
+
+    console.log('Итоговые настройки:')
+    console.log(evolutionTarget);
+    console.log(populationSize);
+    console.log(mutationRate);
 
     var population = new Population(evolutionTarget, populationSize, mutationRate);
+    
     population.init();
 
     console.log("Mutation Rate:");
@@ -18,10 +39,10 @@ window.onload = function() {
         population.calculateScore();
         population.createGenePool();
 
-        console.log("Population");
-        console.log(population.elements);
-        console.log("GenePool");
-        console.log(population.genePool);
+        // console.log("Population");
+        // console.log(population.elements);
+        // console.log("GenePool");
+        // console.log(population.genePool);
 
         population.nextGeneration();
 
@@ -31,9 +52,9 @@ window.onload = function() {
             successSpecimen.innerHTML = population.elements[generationResult].dna;
         }
         else {
-            successSpecimen.innerHTML = "EMPTY";
+            successSpecimen.innerHTML = "#";
         }
-        params.innerHTML = "Цель: " + evolutionTarget + " Размер популяции: " + populationSize + " Вероятность мутации: " + mutationRate;
+        // params.innerHTML = "Цель: " + evolutionTarget + " Размер популяции: " + populationSize + " Вероятность мутации: " + mutationRate;
         generations.innerHTML = population.generations;
         successSpecimenId.innerHTML = generationResult;
 
@@ -41,8 +62,7 @@ window.onload = function() {
         if (population.generations > 1000)
             break;
     }
-}
-
+};
 class Population{
     constructor(target, size, mutationRate){
         this.generations = 0;
