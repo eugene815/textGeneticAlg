@@ -57,6 +57,11 @@ function initAlgorithm() {
             // аварийная остановка, если эволюция зашла в тупик
             if (population.generations >= 1000) {
                 reject('Экстренный выход. Превышено кол-во итераций.');
+                console.log("Population");
+                console.log(population.elements); 
+                console.log("GenePool"); 
+                console.log(population.genePool);
+                break;
             } else {
                 console.log('Поколение #' + population.generations);
             }
