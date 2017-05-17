@@ -119,8 +119,20 @@ class Population{
 
     calculateScore(){
         // оцениваем каждый элемент исходя из его ДНК
+        var bestScore = 0;
+        var bestIndex = 0;
         for(var i = 0; i < this.size; i++)
-            this.elements[i].score = this.score(this.elements[i].dna);
+        {
+            var score = this.score(this.elements[i].dna);
+            this.elements[i].score = score;
+            if(score > bestScore)
+            {
+                bestScore = score;
+                bestIndex = i;
+            }
+
+        }
+        console.log("Лучший экземпляр: " + this.elements[bestIndex].dna);
     }
 
     // шанс попасть в генетический пул выше для самых успешных представителей
